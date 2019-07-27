@@ -18,12 +18,16 @@
         font-weight: bolder;
         font-family: 'Courier New', Courier, monospace;
     }
+
+    #value {
+        color: #26a69a;
+    }
 </style>
 
 <body>
-    <h1>Audio With Volume Setting </h1>
-    <hr />
     <div class="container">
+        <h1>Audio With Volume Setting </h1>
+        <hr />
         <div class="row">
 
             <div class="col s12 m12 l12">
@@ -38,15 +42,13 @@
                             <input class="file-path validate" type="text" placeholder="Upload File">
                         </div>
                     </div>
-                    <h4>Or Type The Link</h4>
-                    <div class="file-field input-field">
-                        <input id="audioLink" type="text" placeholder="Link of an audio">
-                    </div>
-                    <p class="range-field">
+                </form>
+                <form action="#">
+                    <div class="range-field ">
                         <h4>Set The Volume</h4>
-                        <input type="range" class="col s12 m10 l10" id="test5" min="0" max="10" />
-                        <p id="value" class=" col s12 m2 l2"> </p>
-                    </p>
+                        <input type="range" class="col s10 m10 l10" id="test5" min="0" max="10" />
+                        <p id="value" class=" col s2 m2 l2"> </p>
+                    </div>
                     <p class="center">
                         <audio id="audio"></audio>
                         <input id="playBtn" class="waves-effect waves-light btn btn-large" type="button"
@@ -74,23 +76,17 @@
         volumeRange.onchange = volumeChange;
 
         const Play = () => {
-            if (playBtn.value == 'Play') {
+            if (playBtn.value == 'Play' && audioFile.value.length !== 0) {
 
-                if (audioFile.value.length !== 0) {
+                audio.src = URL.createObjectURL(audioFile.files[0]);
+                audio.play()
+                playing()
 
-                    audio.src = URL.createObjectURL(audioFile.files[0]);
-                    audio.play()
-                    playing()
-
-                } else if (audioLink.value.length !== 0) {
-                    audio.src = URL.createObjectURL(audioFile.files[0]);
-                    audio.play()
-                    playing()
-                }
-
-            } else if (playBtn.value == 'Stop') {
+            } else if (audioFile.value.length !== 0 && playBtn.value == 'Stop') {
                 audio.pause();
                 stopped();
+            }else if(audioFile.value.length == 0){
+                alert('file is missing')
             }
         }
         audio.onend = (e) => {
